@@ -10,7 +10,7 @@ import {INCREMENT, DECREMENT ,RESET} from 'actions/counter';
  /**
   * reducer
   */
- export default function reducer(state = initState,actions){
+ export default function reducer(state = initState,action){
      switch (action.type){
         case INCREMENT:
             return {
