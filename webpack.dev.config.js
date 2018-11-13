@@ -28,6 +28,7 @@ module.exports = {
         ,host:'0.0.0.0'
     },
     resolve:{
+        //别名配置
         alias:{
             pages:path.join(__dirname,'src/pages'),
             component:path.join(__dirname,'src/component'),
@@ -36,5 +37,8 @@ module.exports = {
             reducers:path.join(__dirname,'src/redux/reducers'),
             // redux:path.join(__dirname,'src/redux')
         }
-    }
+    },
+    //devtool优化
+    devtool: 'inline-source-map',
+    
 };

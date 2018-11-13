@@ -12,7 +12,7 @@ import userInfo from 'reducers/userInfo';
 //         userInfo : userInfo(state.userInfo,action)
 //     }
 // }
-
+//组合的reducers
 export default combineReducers({
     counter,
     userInfo
