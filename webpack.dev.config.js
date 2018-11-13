@@ -14,10 +14,37 @@ module.exports = {
     /*cacheDirectory是用来缓存编译结果，下次编译加速*/
     module:{
         rules:[
-            {
+            {   
+                // 编译js
                 test:/\.js$/,
                 use:['babel-loader?cacheDirectory=true'],
                 include:path.join(__dirname,'src')
+            }
+            ,{
+                // 编译css
+                test:/\.css$/,
+                use: ['style-loader','css-loader']
+            }
+            ,{
+                // 编译less
+                test:/\.less$/,
+                use:[{
+                    loader:"style-loader"
+                },{
+                    loader:"css-loader"
+                },{
+                    loader:"less-loader"
+                }]
+            }
+            ,{
+                //编译图片
+                test:/\.(png|jpg|gif)$/i,
+                use: [{
+                    loader:'url-loader',
+                    options: {
+                        limit: 8192
+                    }
+                }]
             }
         ]
     },
