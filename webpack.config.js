@@ -1,7 +1,12 @@
 const path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var webpack = require('webpack');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ExtraTextPlugin = require("extract-text-webpack-plugin");
 module.exports = {
+    //devtool优化
+    devtool: 'cheap-module-source-map',
     //入口
     entry:{
        app:[
@@ -12,9 +17,10 @@ module.exports = {
     },
     //出口------输出到dist文件夹，输出文件名字为bundle.js
     output:{
+        publicPath: '/',
         path:path.join(__dirname,'./dist'),
-        filename:'[name].[hash].js',
-        chunkFilename: '[name].[chunkhash].js'
+        filename:'[name].[chunkhash].js',
+        chunkFilename: '[name].[chunkhash].js',
     },
     //babel解析
     /*cacheDirectory是用来缓存编译结果，下次编译加速*/
@@ -29,7 +35,11 @@ module.exports = {
             ,{
                 // 编译css
                 test:/\.css$/,
-                use: ['style-loader','css-loader']
+                // use: ['style-loader','css-loader']
+                use: ExtraTextPlugin.extract({
+                    fallback:"style-loader",
+                    use: "css-loader"
+                })
             }
             ,{
                 // 编译less
@@ -55,12 +65,12 @@ module.exports = {
         ]
     },
     //服务配置
-    devServer:{
-        port:8080,
-        contentBase: path.join(__dirname,'./dist')
-        ,historyApiFallback:true
-        ,host:'0.0.0.0'
-    },
+    // devServer:{
+    //     port:8080,
+    //     contentBase: path.join(__dirname,'./dist')
+    //     ,historyApiFallback:true
+    //     ,host:'0.0.0.0'
+    // },
     resolve:{
         //别名配置
         alias:{
@@ -72,16 +82,45 @@ module.exports = {
             // redux:path.join(__dirname,'src/redux')
         }
     },
-    //devtool优化
-    devtool: 'inline-source-map',
     //插件
     plugins: [
         new HtmlWebpackPlugin({
             filename: 'index.html',
             template: path.join(__dirname,'src/index.html')
         })
-        ,new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor'
+        // ,new webpack.optimize.CommonsChunkPlugin({
+        //     name: 'vendor'
+        // })
+        ,new UglifyJSPlugin()
+        //指定环境优化
+        ,new webpack.DefinePlugin({
+            'process.env': {
+                'NODE_ENV': JSON.stringify('production')
+            }
+        })
+        ,new CleanWebpackPlugin(['dist'])
+        ,new ExtraTextPlugin({
+            filename: '[name].[contenthash:8].css',
+            allChunks: true
         })
     ],
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+               commons: {
+                    chunks:"initial",
+                    minChunks: 2, maxInitialRequests: 5,
+                    minSize:0
+               },
+               vendor: {
+                   test:/node_modules/,
+                   chunks:'initial',
+                   name:'vendor',
+                   priority:10,
+                   enforce:true
+               }
+               
+            }
+        }
+    }
 };
