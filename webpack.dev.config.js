@@ -1,4 +1,5 @@
 const path = require('path');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     //入口
     entry:[
@@ -8,7 +9,8 @@ module.exports = {
     //出口------输出到dist文件夹，输出文件名字为bundle.js
     output:{
         path:path.join(__dirname,'./dist'),
-        filename:'bundle.js'
+        filename:'[name].[hash].js',
+        chunkFilename: '[name].[chunkhash].js'
     },
     //babel解析
     /*cacheDirectory是用来缓存编译结果，下次编译加速*/
@@ -67,5 +69,11 @@ module.exports = {
     },
     //devtool优化
     devtool: 'inline-source-map',
-    
+    //插件
+    plugins: [
+        new HtmlWebpackPlugin({
+            filename: 'index.html',
+            template: path.join(__dirname,'src/index.html')
+        })
+    ],
 };

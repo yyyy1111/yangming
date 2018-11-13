@@ -1,9 +1,24 @@
 import React from 'react';
 import {BrowserRouter as Router , Route, Switch,Link} from 'react-router-dom'
+
+import Bundle from './Bundle' ;
+
 import Home from 'pages/Home/Home';
 import Page1 from 'pages/Page1/Page1';
 import Counter from 'pages/Counter/Counter';
 import UserInfo from 'pages/UserInfo/UserInfo' ;
+
+const Loading = function () {
+    return <div>Loading...</div>
+};
+
+const createComponent = (component) => (props) => (
+    <Bundle load={component}>
+        {
+            (Component) => Component ? <Component {...props}/> : <Loading/>
+        }
+    </Bundle>
+)
 
 const getRouter = () =>(
     <Router>
