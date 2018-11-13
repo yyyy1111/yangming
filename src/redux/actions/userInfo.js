@@ -27,9 +27,10 @@ function getUserInfoFail(){
 //用dispatch把函数派发出去
 
 export function getUserInfo(){
-    return function (){
+    // console.log('1111');
+    return function (dispatch){
         //发送异步请求
-        dispatchEvent(getUserInfoRequest());
+        dispatch(getUserInfoRequest());
 
         return fetch('http://localhost:8080/api/user.json')
             .then((response => {
