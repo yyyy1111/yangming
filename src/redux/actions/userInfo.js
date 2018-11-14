@@ -28,21 +28,25 @@ function getUserInfoFail(){
 
 export function getUserInfo(){
     // console.log('1111');
-    return function (dispatch){
-        //发送异步请求
-        dispatch(getUserInfoRequest());
+    // return function (dispatch){
+    //     //发送异步请求
+    //     dispatch(getUserInfoRequest());
 
-        return fetch('http://localhost:8080/api/user.json')
-            .then((response => {
-                return response.json()
-            }))
-            .then((json) => {
-                    dispatch(getUserInfoSuccess(json))
-                }
-            ).catch(
-                () => {
-                    dispatch(getUserInfoFail());
-                }
-            )
+    //     return fetch('http://localhost:8080/api/user.json')
+    //         .then((response => {
+    //             return response.json()
+    //         }))
+    //         .then((json) => {
+    //                 dispatch(getUserInfoSuccess(json))
+    //             }
+    //         ).catch(
+    //             () => {
+    //                 dispatch(getUserInfoFail());
+    //             }
+    //         )
+    // }
+    return {
+        types:[GET_USER_INFO_REQUEST,GET_USER_INFO_SUCCESS,GET_USER_INFO_FAIL],
+        promise: client => client.get(`http://localhost:8080/api/user.json`)
     }
 }

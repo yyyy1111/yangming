@@ -40,8 +40,18 @@ export default store => next => action => {
          }
      };
      //定义请求失败时的方法
-     
+
+     const onRejected = error => {
+         next({
+             ...rest,
+             error,
+             type: FAILURE
+         });
+    };
 
 
-
+    return promise(axios).then(onFulfilled, onRejected).catch(error => {
+        console.error('MIDDLEWARE ERROR:', error);
+        onRejected(error)
+    })
 }
