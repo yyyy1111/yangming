@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {getUserInfo} from "actions/userInfo" ;
 
-class UserInfo extends Component {
+class Userinfo extends Component {
     render() {
         const {userInfo, isLoading, errorMsg} = this.props.userInfo;
         return (
@@ -25,4 +25,4 @@ class UserInfo extends Component {
     }
 }
 
-export default connect((state) => ({userInfo: state.userInfo}),{getUserInfo})(UserInfo);
+export default connect((state) => ({userInfo: state.userInfo}),{getUserInfo})(Userinfo);
