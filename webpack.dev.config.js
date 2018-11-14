@@ -80,8 +80,27 @@ module.exports = {
             filename: 'index.html',
             template: path.join(__dirname,'src/index.html')
         })
-        ,new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor'
-        })
+        // ,new webpack.optimize.CommonsChunkPlugin({
+        //     name: 'vendor'
+        // })
     ],
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+               commons: {
+                    chunks:"initial",
+                    minChunks: 2, maxInitialRequests: 5,
+                    minSize:0
+               },
+               vendor: {
+                   test:/node_modules/,
+                   chunks:'initial',
+                   name:'vendor',
+                   priority:10,
+                   enforce:true
+               }
+               
+            }
+        }
+    }
 };

@@ -98,7 +98,11 @@ module.exports = {
                 'NODE_ENV': JSON.stringify('production')
             }
         })
-        ,new CleanWebpackPlugin(['dist'])
+        ,new CleanWebpackPlugin(['dist/*.js','dist/*.html','dist/*.jpg'],{
+            root: __dirname,
+            verbose: true,
+            dry: false
+        })
         ,new ExtraTextPlugin({
             filename: '[name].[contenthash:8].css',
             allChunks: true
